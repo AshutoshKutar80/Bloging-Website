@@ -4,7 +4,7 @@ include("../conn/conn.php");
 
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    //echo "<script>alert('Please log in to access the dashboard.'); window.location.href = 'Login.php';</script>";
+    echo "<script>alert('Please log in to access the dashboard.'); window.location.href = 'Login.php';</script>";
     exit();
 }
 
@@ -130,6 +130,8 @@ $posts = mysqli_fetch_all($post_result, MYSQLI_ASSOC);
                             <img src="../assests/dont-like.png" class="icon"> Dislike
                             <?php echo $post['dislikes']; ?>
                         </label>
+                        <button class="delete-btn" data-post-id="<?php echo $post['id']; ?>">Delete</button>
+                        <!-- Delete button -->
                     </p>
                 </div>
                 <?php endforeach; ?>
@@ -289,6 +291,34 @@ $posts = mysqli_fetch_all($post_result, MYSQLI_ASSOC);
                 }
             });
         });
+
+
+
+        // Handle delete post functionality
+        $('.delete-btn').on('click', function() {
+            const postId = $(this).data('post-id');
+            if (confirm('Are you sure you want to delete this post?')) {
+                $.ajax({
+                    url: 'delete_post.php', // Create this script to handle deletion
+                    type: 'POST',
+                    data: {
+                        post_id: postId
+                    },
+                    success: function(response) {
+                        if (response.trim() === 'success') {
+                            alert('Post deleted successfully!');
+                            $('#post-' + postId).remove(); // Remove the post from the DOM
+                        } else {
+                            alert('Failed to delete the post: ' + response);
+                        }
+                    },
+                    error: function() {
+                        alert('An error occurred while deleting the post.');
+                    }
+                });
+            }
+        });
+
     });
     </script>
 

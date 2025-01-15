@@ -4,7 +4,6 @@
 <head>
     <title>SignUp Page</title>
     <link rel="stylesheet" href="../css/style.css" />
-    <!-- <link rel="shortcut icon" href="../assests/logo.png" type="image/x-icon">k -->
 </head>
 
 <body>
